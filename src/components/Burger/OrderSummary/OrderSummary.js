@@ -1,33 +1,37 @@
-import React from 'react';
+import React, { Component } from 'react';
 
+import Aux from '../../../hoc/Aux';
 import Button from '../../UI/Button/Button';
 
-const orderSummary = (props) => {
-    const ingredients = props.ingredients; console.log(ingredients);
+class orderSummary extends Component {
+    // componentDidUpdate() {
+    //     console.log('orderSummary component did update');
+    // }
 
-    const ingredientSummary = Object.keys(ingredients).map((ingredient, index) => {
+    render() {
+        const ingredientSummary = Object.keys( this.props.ingredients )
+        .map( igKey => {
+            return (
+                <li key={igKey}>
+                    <span style={{ textTransform: 'capitalize' }}>{igKey}</span>: {this.props.ingredients[igKey]}
+                </li> );
+        } );
+
         return (
-            <li key={ingredient + index}>
-                <span style={{textTransform: 'capitalize'}}>{ingredient}</span>
-                : <strong style={{color: '#a54382'}}>{ingredients[ingredient]}</strong>
-            </li>
+            <Aux>
+                <h3>Your Order</h3>
+                <p>A delicious burger with the following ingredients:</p>
+                <ul>
+                    {ingredientSummary}
+                </ul>
+                <p><strong>Total Price: {this.props.price.toFixed(2)}</strong></p>
+                <p>Continue to Checkout?</p>
+                <Button btnType="Danger" clicked={this.props.purchaseCancelled}>CANCEL</Button>
+                <Button btnType="Success" clicked={this.props.purchaseContinued}>CONTINUE</Button>
+            </Aux>
         );
-    });
-
-    console.log(ingredientSummary);
-
-    return (
-        <React.Fragment>
-            <h3>Your Order</h3>
-            <p>Inside got this lah</p>
-            <ul>
-                {ingredientSummary}
-            </ul>
-            <p>Continue to Checkout?</p>
-            <Button btnType="Danger" clicked={props.purchaseCancelled}>Cancel</Button>
-            <Button btnType="Success" clicked={props.purchaseContinued}>Continue</Button>
-        </React.Fragment>
-    );
+    }
+    
 };
 
 export default orderSummary;
